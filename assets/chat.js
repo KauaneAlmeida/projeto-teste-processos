@@ -13,7 +13,10 @@
     if(!root){ root = document.createElement('div'); root.id = 'chat-root'; document.body.appendChild(root); }
     root.innerHTML = `
       <div class="chat-container" role="dialog" aria-label="Chat">
-        <div class="chat-header">💬 Chat Advocacia — Escritório m.lima</div>
+        <div class="chat-header">
+          💬 Chat Advocacia — Escritório m.lima
+          <button class="chat-close-btn" id="chat-close" aria-label="Fechar chat">×</button>
+        </div>
         <div id="chat-messages" class="messages"></div>
         <div class="input-area">
           <input id="chat-input" placeholder="Digite sua mensagem... ⚖️" aria-label="Mensagem"/>
@@ -23,6 +26,9 @@
     `;
     document.getElementById('chat-send').addEventListener('click', sendMessage);
     document.getElementById('chat-input').addEventListener('keypress', function(e){ if(e.key==='Enter') sendMessage(); });
+    document.getElementById('chat-close').addEventListener('click', function(){ 
+      document.getElementById('chat-root').classList.remove('active'); 
+    });
     // mensagem inicial
     addMessage("Olá! Bem-vindo — pronto pra conversar?", 'bot');
   }
