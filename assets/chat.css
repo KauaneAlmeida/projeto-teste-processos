@@ -232,11 +232,9 @@
   bottom: 20px;
   left: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
-  /* Remove background from main container */
-  /* Remove background from main container */
-  background: none;
+  gap: 12px;
   color: #ffffff;
   padding: 0;
   border-radius: 0;
@@ -246,6 +244,8 @@
   box-shadow: none;
   line-height: 1.4;
   border: none;
+  background: none;
+  z-index: 99999;
 
   opacity: 0;
   transform: translateY(20px) scale(0.9);
@@ -253,8 +253,27 @@
   animation-delay: 0.8s;
 }
 
+.chat-launcher-text {
+  /* Tooltip bubble above icon */
+  background: linear-gradient(135deg, #6a00f4 0%, #8a2be2 100%);
+  padding: 12px 16px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 
+    0 8px 32px rgba(106, 0, 244, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 200px;
+  text-align: center;
+  order: 1;
+  
+  /* Pulsing animation */
+  animation: pulseTooltip 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
 .chat-launcher-icon {
-  /* Round icon button */
+  /* Round icon button below tooltip */
   width: 60px;
   height: 60px;
   background: linear-gradient(135deg, #6a00f4 0%, #8a2be2 100%);
@@ -270,103 +289,62 @@
     0 4px 16px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-  /* Round icon button */
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #6a00f4 0%, #8a2be2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  border: none;
-  /* Tooltip bubble */
-  box-shadow: 
-    0 8px 32px rgba(106, 0, 244, 0.4),
-    0 4px 16px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: linear-gradient(135deg, #6a00f4 0%, #8a2be2 100%);
-  padding: 12px 16px;
-  border-radius: 20px;
-  position: relative;
-  box-shadow: 
-    0 8px 32px rgba(106, 0, 244, 0.4),
-  /* Tooltip bubble */
-  background: linear-gradient(135deg, #6a00f4 0%, #8a2be2 100%);
-  padding: 12px 16px;
-  border-radius: 20px;
-  white-space: nowrap;
-  position: relative;
-  box-shadow: 
-    0 8px 32px rgba(106, 0, 244, 0.4),
-    0 4px 16px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  
-  /* Pulsing animation */
-  animation: pulseTooltip 4s ease-in-out infinite;
-  animation-delay: 2s;
+  order: 2;
 }
 
-/* Tooltip arrow pointing to icon */
-.chat-launcher-text::before {
+/* Tooltip arrow pointing down to icon */
+.chat-launcher-text::after {
   content: '';
   position: absolute;
-  left: -8px;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 8px solid #6a00f4;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #6a00f4;
 }
 
 @keyframes pulseTooltip {
   0%, 75% { 
     opacity: 0; 
-    transform: translateX(-10px) scale(0.9);
+    transform: translateY(10px) scale(0.9);
     visibility: hidden;
   }
   5%, 70% { 
     opacity: 1; 
-    transform: translateX(0) scale(1);
+    transform: translateY(0) scale(1);
     visibility: visible;
   }
 }
 
+.chat-launcher:hover .chat-launcher-icon {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 
-    0 12px 40px rgba(106, 0, 244, 0.5),
-    0 6px 20px rgba(0, 0, 0, 0.3);
   box-shadow: 
     0 12px 40px rgba(106, 0, 244, 0.5),
     0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .chat-launcher:hover .chat-launcher-text {
-/* Tooltip arrow pointing to icon */
-.chat-launcher-text::before {
-  content: '';
-  position: absolute;
-  left: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-@keyframes pulseTooltip {
-  0%, 75% { 
-  border-bottom: 8px solid transparent;
-    transform: translateX(-10px) scale(0.9);
-    visibility: hidden;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  animation: none;
 }
-  5%, 70% { 
+
 @keyframes launcherSlideUp {
-    transform: translateX(0) scale(1);
-    visibility: visible;
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* ========= Responsivo ========= */
 @media (max-width: 768px) {
   #chat-root {
     bottom: max(80px, env(safe-area-inset-bottom));
